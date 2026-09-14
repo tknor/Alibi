@@ -1,12 +1,14 @@
 spring:
-
   application:
     name: alibi
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/alibi
-    username: alibi
-    password: alibi
+  profiles:
+    default: local
 
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+  docker:
+    compose:
+      # docker-compose file is meant to be always started manually
+      enabled: false
