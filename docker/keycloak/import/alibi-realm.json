@@ -1,0 +1,108 @@
+{
+  "realm": "alibi",
+  "displayName": "Alibi",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "CREW_MEMBER",
+        "description": "Can access their own crew profile and assigned work."
+      },
+      {
+        "name": "CREW_MANAGER",
+        "description": "Can manage crew members."
+      },
+      {
+        "name": "ADMIN",
+        "description": "Can administer Alibi."
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "alibi-api",
+      "name": "Alibi REST API demo client",
+      "description": "Local-only public client for API and Swagger/Postman demonstrations.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:*/*",
+        "http://127.0.0.1:*/*"
+      ],
+      "webOrigins": [
+        "http://localhost:*",
+        "http://127.0.0.1:*"
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "fullScopeAllowed": true
+    }
+  ],
+  "users": [
+    {
+      "username": "crew.member",
+      "firstName": "Crew",
+      "lastName": "Member",
+      "email": "crew.member@alibi.local",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "crew-member",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "CREW_MEMBER"
+      ]
+    },
+    {
+      "username": "crew.manager",
+      "firstName": "Crew",
+      "lastName": "Manager",
+      "email": "crew.manager@alibi.local",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "crew-manager",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "CREW_MANAGER"
+      ]
+    },
+    {
+      "username": "alibi.admin",
+      "firstName": "Alibi",
+      "lastName": "Admin",
+      "email": "alibi.admin@alibi.local",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "alibi-admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ADMIN"
+      ]
+    }
+  ]
+}
