@@ -1,0 +1,8 @@
+.git
+.gradle
+.idea
+build
+unversioned
+*.iml
+AGENTS.md
+HELP.md
