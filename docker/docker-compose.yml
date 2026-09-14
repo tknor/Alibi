@@ -37,5 +37,24 @@ services:
       keycloak-postgres:
         condition: service_healthy
 
+  alibi-postgres:
+    container_name: alibi-postgres
+    image: postgres:17.10-alpine
+    environment:
+      POSTGRES_DB: alibi
+      POSTGRES_USER: alibi
+      POSTGRES_PASSWORD: alibi
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U alibi -d alibi" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - alibi-postgres-data:/var/lib/postgresql/data
+
 volumes:
   keycloak-postgres-data:
+  alibi-postgres-data:
