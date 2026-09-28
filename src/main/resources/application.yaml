@@ -8,6 +8,10 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
 
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
   docker:
     compose:
       # docker-compose file is meant to be always started manually
