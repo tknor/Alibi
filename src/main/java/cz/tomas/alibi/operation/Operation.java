@@ -1,6 +1,6 @@
 package cz.tomas.alibi.operation;
 
-import cz.tomas.alibi.common.Item;
+import cz.tomas.alibi.common.domain.Item;
 
 import java.util.List;
 

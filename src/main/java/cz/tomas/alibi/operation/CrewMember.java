@@ -1,6 +1,6 @@
 package cz.tomas.alibi.operation;
 
-import cz.tomas.alibi.common.Person;
+import cz.tomas.alibi.common.domain.Person;
 
 import java.util.List;
 
