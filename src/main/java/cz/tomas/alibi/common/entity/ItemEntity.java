@@ -12,6 +12,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
+@Table(name = "item")
 public class ItemEntity {
 
     @Id
