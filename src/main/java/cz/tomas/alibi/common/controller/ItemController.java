@@ -29,6 +29,7 @@ public class ItemController {
                 .toList();
     }
 
+    // TODO command or DTO
     @PostMapping
     public ItemDto createItem(@RequestBody ItemDto dto) {
         ItemEntity created = itemService.createItem(ItemDtoMapper.toItemEntity(dto));

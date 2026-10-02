@@ -2,8 +2,8 @@ package cz.tomas.alibi.config;
 
 import cz.tomas.alibi.common.controller.ItemController;
 import cz.tomas.alibi.common.controller.PersonController;
-import cz.tomas.alibi.common.domain.Person;
 import cz.tomas.alibi.common.entity.ItemEntity;
+import cz.tomas.alibi.common.entity.PersonEntity;
 import cz.tomas.alibi.common.service.ItemService;
 import cz.tomas.alibi.common.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,7 +110,7 @@ class SecurityConfigTest {
 
     @Test
     void adminCanCreatePersonFromJson() throws Exception {
-        when(personService.createPerson(any())).thenReturn(Person.builder().name("Jane").phone("123").build());
+        when(personService.createPerson(any())).thenReturn(PersonEntity.builder().name("Jane").phone("123").build());
 
         mvc.perform(post("/api/person")
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_ADMIN)
