@@ -1,6 +1,7 @@
 # Alibi
 
-Alibi is a Spring Boot REST API built as a learning project. Its domain is an operation planning and crew-management application.
+Alibi is a Spring Boot REST API experimental / learning / demonstration project.
+Its domain is a generic operation planning and crew-management application.
 
 ## Prerequisites
 
@@ -29,7 +30,11 @@ To make the selected environment explicit:
 ```
 
 See [docker/USAGE.md](docker/USAGE.md) for the local Keycloak console, demo
-accounts, and how to reset the local infrastructure.
+accounts, etc.
+
+## Demo seed data
+
+[`db/seed/initial-action-data.sql`](db/seed/initial-action-data.sql)
 
 Stop the infrastructure when it is no longer needed:
 
@@ -47,11 +52,11 @@ Run all tests with:
 
 ## Configuration profiles
 
-| Profile | Intended use | Connection source |
-| --- | --- | --- |
-| `local` | Developer machine | Committed Docker Compose defaults |
-| `test` | Automated integration tests | Testcontainers, configured dynamically |
-| `prod` | Deployed application | Environment variables / secret manager |
+| Profile | Intended use                | Connection source                      |
+|---------|-----------------------------|----------------------------------------|
+| `local` | Developer machine           | Committed Docker Compose defaults      |
+| `test`  | Automated integration tests | Testcontainers, configured dynamically |
+| `prod`  | Deployed application        | Environment variables / secret manager |
 
 ## Production
 
@@ -68,4 +73,5 @@ SPRING_PROFILES_ACTIVE=prod
 DB_URL=jdbc:postgresql://database-host:5432/alibi
 DB_USERNAME=<username>
 DB_PASSWORD=<secret>
+OIDC_ISSUER_URI=https://identity.example.com/realms/alibi
 ```
