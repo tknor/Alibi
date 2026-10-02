@@ -1,12 +1,9 @@
 package cz.tomas.alibi.common.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -16,7 +13,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "person")
-public class PersonEntity {
+public class Person {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -26,6 +23,12 @@ public class PersonEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone")
     private String phone;
+
+    /**
+     * List of associated crew members (associations between this person and operations).
+     */
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<CrewMember> crewMembers;
 }

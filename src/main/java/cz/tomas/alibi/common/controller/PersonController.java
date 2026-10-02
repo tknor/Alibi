@@ -1,11 +1,10 @@
 package cz.tomas.alibi.common.controller;
 
-import cz.tomas.alibi.common.domain.*;
 import cz.tomas.alibi.common.dto.CreatePersonCommand;
 import cz.tomas.alibi.common.dto.PersonDetailDto;
 import cz.tomas.alibi.common.dto.PersonSummaryDto;
 import cz.tomas.alibi.common.dtomapper.PersonDtoMapper;
-import cz.tomas.alibi.common.entity.PersonEntity;
+import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class PersonController {
 
     @GetMapping
     public List<PersonSummaryDto> getAllPersons() {
-        List<PersonEntity> persons = personService.getAllPersons();
+        List<Person> persons = personService.getAllPersons();
 
         return persons.stream()
                 .map(PersonDtoMapper::toPersonSummaryDto)
@@ -34,7 +33,7 @@ public class PersonController {
 
     @PostMapping
     public PersonDetailDto createPerson(@RequestBody CreatePersonCommand command) {
-        PersonEntity person = personService.createPerson(command);
+        Person person = personService.createPerson(command);
         return PersonDtoMapper.toPersonDetailDto(person);
     }
 }

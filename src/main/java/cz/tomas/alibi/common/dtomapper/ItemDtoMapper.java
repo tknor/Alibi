@@ -2,16 +2,17 @@ package cz.tomas.alibi.common.dtomapper;
 
 import cz.tomas.alibi.common.domain.ItemCategory;
 import cz.tomas.alibi.common.dto.ItemDto;
-import cz.tomas.alibi.common.entity.ItemEntity;
+import cz.tomas.alibi.common.entity.Item;
 
+// TODO stop using static methods (for better testability) possibly use MapStruct instead
 public class ItemDtoMapper {
 
-    public static ItemDto toItemDto(ItemEntity itemEntity) {
-        return new ItemDto(itemEntity.getLabel(), itemEntity.getCategory().toString());
+    public static ItemDto toItemDto(Item item) {
+        return new ItemDto(item.getLabel(), item.getCategory().toString());
     }
 
-    public static ItemEntity toItemEntity(ItemDto itemDto) {
-        return ItemEntity.builder()
+    public static Item toItemEntity(ItemDto itemDto) {
+        return Item.builder()
                 .label(itemDto.label())
                 .category(ItemCategory.valueOf(itemDto.category()))
                 .build();

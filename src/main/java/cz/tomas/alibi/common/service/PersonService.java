@@ -1,7 +1,7 @@
 package cz.tomas.alibi.common.service;
 
 import cz.tomas.alibi.common.dto.CreatePersonCommand;
-import cz.tomas.alibi.common.entity.PersonEntity;
+import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,14 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
-    public List<PersonEntity> getAllPersons() {
+    public List<Person> getAllPersons() {
         return personRepository.findAll();
     }
 
-    public PersonEntity createPerson(CreatePersonCommand command) {
+    // TODO not sure if it is good CQRS practice
+    public Person createPerson(CreatePersonCommand command) {
 
-        PersonEntity candidate = PersonEntity.builder()
+        Person candidate = Person.builder()
                 .name(command.name())
                 .phone(command.phone())
                 .build();

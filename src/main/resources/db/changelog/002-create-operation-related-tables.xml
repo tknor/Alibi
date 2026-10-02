@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="003-create-operation-table" author="tomas">
+        <createTable tableName="operation">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="crew_size_limit" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="operation"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="004-create-crew-table" author="tomas">
+        <createTable tableName="crew_member">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="operation_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="person_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="crew_member"
+                baseColumnNames="operation_id"
+                constraintName="fk_crew_member_operation"
+                referencedTableName="operation"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="crew_member"
+                baseColumnNames="person_id"
+                constraintName="fk_crew_member_person"
+                referencedTableName="person"
+                referencedColumnNames="id"/>
+
+        <addUniqueConstraint
+                tableName="crew_member"
+                columnNames="operation_id, person_id"
+                constraintName="uq_crew_member_operation_person"/>
+        <rollback>
+            <dropTable tableName="crew_member"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,6 +1,6 @@
 package cz.tomas.alibi.common.service;
 
-import cz.tomas.alibi.common.entity.ItemEntity;
+import cz.tomas.alibi.common.entity.Item;
 import cz.tomas.alibi.common.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public List<ItemEntity> getAllItems() {
+    public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
 
-    public ItemEntity createItem(ItemEntity itemEntity) {
-        return itemRepository.save(itemEntity);
+    public Item createItem(Item item) {
+        return itemRepository.save(item);
     }
 }

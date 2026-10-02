@@ -4,5 +4,4 @@ public record ItemDto(
         String label,
         String category
 ) {
-
 }
