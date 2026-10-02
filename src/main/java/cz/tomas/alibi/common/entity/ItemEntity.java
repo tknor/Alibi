@@ -16,6 +16,7 @@ import java.util.UUID;
 public class ItemEntity {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     @Column(name = "label", nullable = false)

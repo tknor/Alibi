@@ -1,4 +1,10 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/alibi
+          jwk-set-uri: http://localhost:8081/realms/alibi/protocol/openid-connect/certs
   datasource:
     url: jdbc:postgresql://localhost:5432/alibi
     username: alibi

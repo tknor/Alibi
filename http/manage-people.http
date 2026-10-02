@@ -3,6 +3,7 @@
 POST http://localhost:8080/api/person
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "John Doe",
