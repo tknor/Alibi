@@ -19,6 +19,7 @@ import java.util.UUID;
 public class PersonEntity {
 
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue
     private UUID id;
 
