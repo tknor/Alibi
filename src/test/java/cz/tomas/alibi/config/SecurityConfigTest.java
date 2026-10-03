@@ -246,11 +246,11 @@ class SecurityConfigTest {
     }
 
     private CreatePersonRequest createPersonRequest() {
-        return new CreatePersonRequest("Jane Doe", "123");
+        return new CreatePersonRequest("Jane Doe", "+420736123456");
     }
 
-    private ItemDto itemRequest() {
-        return new ItemDto("Radio", "TOOL");
+    private CreateItemRequest itemRequest() {
+        return new CreateItemRequest("Radio", ItemCategory.TOOL);
     }
 
     private CreateOperationRequest createOperationRequest() {
