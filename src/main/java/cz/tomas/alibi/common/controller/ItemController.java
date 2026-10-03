@@ -4,6 +4,7 @@ import cz.tomas.alibi.common.dto.ItemDto;
 import cz.tomas.alibi.common.dtomapper.ItemDtoMapper;
 import cz.tomas.alibi.common.entity.Item;
 import cz.tomas.alibi.common.service.ItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto createItem(@RequestBody ItemDto dto) {
+    public ItemDto createItem(@Valid @RequestBody ItemDto dto) {
         Item created = itemService.createItem(ItemDtoMapper.toItemEntity(dto));
         return ItemDtoMapper.toItemDto(created);
     }

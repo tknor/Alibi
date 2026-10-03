@@ -1,6 +1,5 @@
 package cz.tomas.alibi.common.dtomapper;
 
-import cz.tomas.alibi.common.dto.CreateOperationCommand;
 import cz.tomas.alibi.common.dto.CrewMemberDto;
 import cz.tomas.alibi.common.dto.OperationDetailDto;
 import cz.tomas.alibi.common.entity.CrewMember;
@@ -10,13 +9,6 @@ import cz.tomas.alibi.common.entity.Operation;
 public final class OperationDtoMapper {
 
     private OperationDtoMapper() {
-    }
-
-    public static Operation toOperationEntity(CreateOperationCommand command) {
-        return Operation.builder()
-                .codeName(command.codeName())
-                .crewSizeLimit(command.crewSizeLimit())
-                .build();
     }
 
     public static OperationDetailDto toOperationDto(Operation operation) {

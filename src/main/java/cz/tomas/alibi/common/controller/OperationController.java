@@ -1,11 +1,13 @@
 package cz.tomas.alibi.common.controller;
 
 import cz.tomas.alibi.common.dto.AddCrewMemberCommand;
+import cz.tomas.alibi.common.dto.AddCrewMemberRequest;
 import cz.tomas.alibi.common.dto.CreateOperationCommand;
+import cz.tomas.alibi.common.dto.CreateOperationRequest;
 import cz.tomas.alibi.common.dto.OperationDetailDto;
 import cz.tomas.alibi.common.dtomapper.OperationDtoMapper;
-import cz.tomas.alibi.common.entity.Operation;
-import cz.tomas.alibi.common.service.OperationService;
+import cz.tomas.alibi.common.service.OperationCommandService;
+import cz.tomas.alibi.common.service.OperationQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,34 +20,41 @@ import java.util.UUID;
 @RequestMapping("/api/operation")
 public class OperationController {
 
-    private final OperationService operationService;
+    private final OperationQueryService operationQueryService;
+    private final OperationCommandService operationCommandService;
 
     // TODO implement projection: OperationSummaryDto with id, codeName, (crewMembersCount / crewSizeLimit) as occupancy
     @GetMapping
     public List<OperationDetailDto> getAllOperations() {
-        return operationService.getAllOperationsFull().stream()
+        return operationQueryService.getAllOperations().stream()
                 .map(OperationDtoMapper::toOperationDto)
                 .toList();
     }
 
     @GetMapping("/{operationId}")
     public OperationDetailDto getOperation(@PathVariable UUID operationId) {
-        return OperationDtoMapper.toOperationDto(operationService.getOperation(operationId));
+        return OperationDtoMapper.toOperationDto(operationQueryService.getOperation(operationId));
     }
 
     @PostMapping
-    public OperationDetailDto createOperation(@Valid @RequestBody CreateOperationCommand command) {
-        Operation operation = OperationDtoMapper.toOperationEntity(command);
-        return OperationDtoMapper.toOperationDto(operationService.createOperation(operation));
+    public OperationDetailDto createOperation(@Valid @RequestBody CreateOperationRequest request) {
+        CreateOperationCommand command = new CreateOperationCommand(
+                request.codeName(),
+                request.crewSizeLimit()
+        );
+
+        return OperationDtoMapper.toOperationDto(operationCommandService.createOperation(command));
     }
 
     @PostMapping("/{operationId}/crew-member")
     public OperationDetailDto addCrewMember(
             @PathVariable UUID operationId,
-            @Valid @RequestBody AddCrewMemberCommand command
+            @Valid @RequestBody AddCrewMemberRequest request
     ) {
+        AddCrewMemberCommand command = new AddCrewMemberCommand(operationId, request.personId());
+
         return OperationDtoMapper.toOperationDto(
-                operationService.addCrewMember(operationId, command.personId())
+                operationCommandService.addCrewMember(command)
         );
     }
 
@@ -55,7 +64,7 @@ public class OperationController {
             @PathVariable UUID personId
     ) {
         return OperationDtoMapper.toOperationDto(
-                operationService.removeCrewMember(operationId, personId)
+                operationCommandService.removeCrewMember(operationId, personId)
         );
     }
 }

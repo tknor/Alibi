@@ -1,5 +1,7 @@
 package cz.tomas.alibi.common.service;
 
+import cz.tomas.alibi.common.dto.AddCrewMemberCommand;
+import cz.tomas.alibi.common.dto.CreateOperationCommand;
 import cz.tomas.alibi.common.entity.Operation;
 import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.exception.ResourceNotFoundException;
@@ -9,39 +11,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class OperationService {
+public class OperationCommandService {
 
     private final OperationRepository operationRepository;
     private final PersonRepository personRepository;
 
-    @Transactional(readOnly = true)
-    public List<Operation> getAllOperationsFull() {
-        return operationRepository.findAllWithCrewMembers();
-    }
-
-    @Transactional(readOnly = true)
-    public Operation getOperation(UUID operationId) {
-        return operationRepository.findWithCrewMembersById(operationId)
-                .orElseThrow(() -> operationNotFound(operationId));
-    }
-
     @Transactional
-    public Operation createOperation(Operation operation) {
+    public Operation createOperation(CreateOperationCommand command) {
+
+        Operation operation = Operation.builder()
+                .codeName(command.codeName())
+                .crewSizeLimit(command.crewSizeLimit())
+                .build();
+
         return operationRepository.save(operation);
     }
 
     // TODO call a dummy audit service which could log the attempt of adding and removing crew members (using new transaction so the attempt is always logged) and call it to log the success of the operation (in the same transaction so that the success is logged only when nothing goes wrong)
     @Transactional
-    public Operation addCrewMember(UUID operationId, UUID personId) {
-        Operation operation = getOperationForUpdate(operationId);
+    public Operation addCrewMember(AddCrewMemberCommand command) {
 
-        Person person = personRepository.findById(personId)
-                .orElseThrow(() -> personNotFound(personId));
+        Operation operation = getOperationForUpdate(command.operationId());
+
+        Person person = personRepository.findById(command.personId())
+                .orElseThrow(() -> personNotFound(command.personId()));
 
         operation.addCrewMember(person);
         return operationRepository.save(operation);
@@ -49,7 +46,9 @@ public class OperationService {
 
     @Transactional
     public Operation removeCrewMember(UUID operationId, UUID personId) {
+
         Operation operation = getOperationForUpdate(operationId);
+
         operation.removeCrewMember(personId);
         return operationRepository.save(operation);
     }

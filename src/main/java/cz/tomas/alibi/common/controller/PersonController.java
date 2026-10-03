@@ -1,11 +1,12 @@
 package cz.tomas.alibi.common.controller;
 
-import cz.tomas.alibi.common.dto.CreatePersonCommand;
+import cz.tomas.alibi.common.dto.CreatePersonRequest;
 import cz.tomas.alibi.common.dto.PersonDetailDto;
 import cz.tomas.alibi.common.dto.PersonSummaryDto;
 import cz.tomas.alibi.common.dtomapper.PersonDtoMapper;
 import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.service.PersonService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,8 @@ public class PersonController {
     }
 
     @PostMapping
-    public PersonDetailDto createPerson(@RequestBody CreatePersonCommand command) {
-        Person person = personService.createPerson(command);
+    public PersonDetailDto createPerson(@Valid @RequestBody CreatePersonRequest request) {
+        Person person = personService.createPerson(request);
         return PersonDtoMapper.toPersonDetailDto(person);
     }
 }

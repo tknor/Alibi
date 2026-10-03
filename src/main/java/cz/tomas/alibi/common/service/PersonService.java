@@ -1,6 +1,6 @@
 package cz.tomas.alibi.common.service;
 
-import cz.tomas.alibi.common.dto.CreatePersonCommand;
+import cz.tomas.alibi.common.dto.CreatePersonRequest;
 import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +18,11 @@ public class PersonService {
         return personRepository.findAll();
     }
 
-    // TODO not sure if it is good CQRS practice
-    public Person createPerson(CreatePersonCommand command) {
+    public Person createPerson(CreatePersonRequest request) {
 
         Person candidate = Person.builder()
-                .name(command.name())
-                .phone(command.phone())
+                .name(request.name())
+                .phone(request.phone())
                 .build();
 
         return personRepository.save(candidate);

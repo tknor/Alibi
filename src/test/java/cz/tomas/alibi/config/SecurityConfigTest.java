@@ -5,14 +5,17 @@ import cz.tomas.alibi.common.controller.OperationController;
 import cz.tomas.alibi.common.controller.PersonController;
 import cz.tomas.alibi.common.domain.ItemCategory;
 import cz.tomas.alibi.common.dto.AddCrewMemberCommand;
+import cz.tomas.alibi.common.dto.AddCrewMemberRequest;
 import cz.tomas.alibi.common.dto.CreateOperationCommand;
-import cz.tomas.alibi.common.dto.CreatePersonCommand;
+import cz.tomas.alibi.common.dto.CreateOperationRequest;
+import cz.tomas.alibi.common.dto.CreatePersonRequest;
 import cz.tomas.alibi.common.dto.ItemDto;
 import cz.tomas.alibi.common.entity.Item;
 import cz.tomas.alibi.common.entity.Operation;
 import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.service.ItemService;
-import cz.tomas.alibi.common.service.OperationService;
+import cz.tomas.alibi.common.service.OperationCommandService;
+import cz.tomas.alibi.common.service.OperationQueryService;
 import cz.tomas.alibi.common.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +71,10 @@ class SecurityConfigTest {
     ItemService itemService;
 
     @MockitoBean
-    OperationService operationService;
+    OperationQueryService operationQueryService;
+
+    @MockitoBean
+    OperationCommandService operationCommandService;
 
     @BeforeEach
     void tokens() {
@@ -91,7 +97,7 @@ class SecurityConfigTest {
 
         mvc.perform(post("/api/person")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createPersonCommand())))
+                        .content(objectMapper.writeValueAsString(createPersonRequest())))
                 .andExpect(status().isUnauthorized());
 
         mvc.perform(post("/api/item")
@@ -105,7 +111,7 @@ class SecurityConfigTest {
         mvc.perform(post("/api/person")
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_MANAGER)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createPersonCommand())))
+                        .content(objectMapper.writeValueAsString(createPersonRequest())))
                 .andExpect(status().isForbidden());
 
         mvc.perform(post("/api/item")
@@ -137,8 +143,8 @@ class SecurityConfigTest {
 
     @Test
     void readingOperationsRequiresManagerOrAdminRole() throws Exception {
-        when(operationService.getAllOperationsFull()).thenReturn(List.of());
-        when(operationService.getOperation(OPERATION_ID)).thenReturn(operation());
+        when(operationQueryService.getAllOperations()).thenReturn(List.of());
+        when(operationQueryService.getOperation(OPERATION_ID)).thenReturn(operation());
 
         mvc.perform(get("/api/operation"))
                 .andExpect(status().isUnauthorized());
@@ -158,20 +164,20 @@ class SecurityConfigTest {
 
     @Test
     void onlyManagerCanCreateOperationsOrChangeCrews() throws Exception {
-        when(operationService.createOperation(any())).thenReturn(operation());
-        when(operationService.addCrewMember(OPERATION_ID, PERSON_ID)).thenReturn(operation());
-        when(operationService.removeCrewMember(OPERATION_ID, PERSON_ID)).thenReturn(operation());
+        when(operationCommandService.createOperation(createOperationCommand())).thenReturn(operation());
+        when(operationCommandService.addCrewMember(addCrewMemberCommand())).thenReturn(operation());
+        when(operationCommandService.removeCrewMember(OPERATION_ID, PERSON_ID)).thenReturn(operation());
 
         mvc.perform(post("/api/operation")
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_ADMIN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createOperationCommand())))
+                        .content(objectMapper.writeValueAsString(createOperationRequest())))
                 .andExpect(status().isForbidden());
 
         mvc.perform(post("/api/operation/{operationId}/crew-member", OPERATION_ID)
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_MEMBER)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(addCrewMemberCommand())))
+                        .content(objectMapper.writeValueAsString(addCrewMemberRequest())))
                 .andExpect(status().isForbidden());
 
         mvc.perform(delete("/api/operation/{operationId}/crew-member/{personId}", OPERATION_ID, PERSON_ID)
@@ -181,13 +187,13 @@ class SecurityConfigTest {
         mvc.perform(post("/api/operation")
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_MANAGER)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createOperationCommand())))
+                        .content(objectMapper.writeValueAsString(createOperationRequest())))
                 .andExpect(status().isOk());
 
         mvc.perform(post("/api/operation/{operationId}/crew-member", OPERATION_ID)
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_MANAGER)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(addCrewMemberCommand())))
+                        .content(objectMapper.writeValueAsString(addCrewMemberRequest())))
                 .andExpect(status().isOk());
 
         mvc.perform(delete("/api/operation/{operationId}/crew-member/{personId}", OPERATION_ID, PERSON_ID)
@@ -202,11 +208,11 @@ class SecurityConfigTest {
         mvc.perform(post("/api/person")
                         .header(AUTHORIZATION_HEADER, BEARER_TOKEN_ADMIN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createPersonCommand())))
+                        .content(objectMapper.writeValueAsString(createPersonRequest())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Jane Doe"));
 
-        verify(personService).createPerson(createPersonCommand());
+        verify(personService).createPerson(createPersonRequest());
     }
 
     @Test
@@ -221,20 +227,28 @@ class SecurityConfigTest {
                 .andExpect(jsonPath("$.label").value("Radio"));
     }
 
-    private CreatePersonCommand createPersonCommand() {
-        return new CreatePersonCommand("Jane Doe", "123");
+    private CreatePersonRequest createPersonRequest() {
+        return new CreatePersonRequest("Jane Doe", "123");
     }
 
     private ItemDto itemRequest() {
         return new ItemDto("Radio", "TOOL");
     }
 
+    private CreateOperationRequest createOperationRequest() {
+        return new CreateOperationRequest("Operation Harambe", 5);
+    }
+
     private CreateOperationCommand createOperationCommand() {
         return new CreateOperationCommand("Operation Harambe", 5);
     }
 
+    private AddCrewMemberRequest addCrewMemberRequest() {
+        return new AddCrewMemberRequest(PERSON_ID);
+    }
+
     private AddCrewMemberCommand addCrewMemberCommand() {
-        return new AddCrewMemberCommand(PERSON_ID);
+        return new AddCrewMemberCommand(OPERATION_ID, PERSON_ID);
     }
 
     private Jwt token(String role) {
