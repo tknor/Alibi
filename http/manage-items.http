@@ -14,6 +14,6 @@ Content-Type: application/json
 Authorization: Bearer {{admin_token}}
 
 {
-  "label": "Field radio",
+  "label": "Radio",
   "category": "TOOL"
 }

@@ -6,10 +6,13 @@ import cz.tomas.alibi.common.controller.PersonController;
 import cz.tomas.alibi.common.domain.ItemCategory;
 import cz.tomas.alibi.common.dto.AddCrewMemberCommand;
 import cz.tomas.alibi.common.dto.AddCrewMemberRequest;
+import cz.tomas.alibi.common.dto.CreateItemRequest;
 import cz.tomas.alibi.common.dto.CreateOperationCommand;
 import cz.tomas.alibi.common.dto.CreateOperationRequest;
 import cz.tomas.alibi.common.dto.CreatePersonRequest;
-import cz.tomas.alibi.common.dto.ItemDto;
+import cz.tomas.alibi.common.dtomapper.ItemDtoMapper;
+import cz.tomas.alibi.common.dtomapper.OperationDtoMapper;
+import cz.tomas.alibi.common.dtomapper.PersonDtoMapper;
 import cz.tomas.alibi.common.entity.Item;
 import cz.tomas.alibi.common.entity.Operation;
 import cz.tomas.alibi.common.entity.Person;
@@ -22,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -43,7 +47,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest({PersonController.class, ItemController.class, OperationController.class})
-@Import(SecurityConfig.class)
+@Import({
+        SecurityConfig.class,
+        PersonDtoMapper.class,
+        ItemDtoMapper.class,
+        OperationDtoMapper.class
+})
 class SecurityConfigTest {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -81,6 +90,7 @@ class SecurityConfigTest {
         when(jwtDecoder.decode("admin-token")).thenReturn(token("ADMIN"));
         when(jwtDecoder.decode("manager-token")).thenReturn(token("CREW_MANAGER"));
         when(jwtDecoder.decode("member-token")).thenReturn(token("CREW_MEMBER"));
+        when(itemService.getItems(any(), any())).thenReturn(Page.empty());
     }
 
     @Test
