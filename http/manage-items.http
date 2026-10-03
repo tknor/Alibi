@@ -1,6 +1,10 @@
 
-### get all items (unsecured)
-GET http://localhost:8080/api/item
+### get a page of all items (unsecured)
+GET http://localhost:8080/api/item?page=0&size=20&sort=label,asc
+Content-Type: application/json
+
+### get a filtered page of tools (unsecured)
+GET http://localhost:8080/api/item?category=TOOL&page=0&size=10
 Content-Type: application/json
 
 ### create item

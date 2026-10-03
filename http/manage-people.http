@@ -21,3 +21,8 @@ Authorization: Bearer {{admin_token}}
 }
 
 > {% client.global.set("person_id", response.body.id); %}
+
+### get person detail
+GET http://localhost:8080/api/person/{{person_id}}
+Accept: application/json
+Authorization: Bearer {{manager_token}}
