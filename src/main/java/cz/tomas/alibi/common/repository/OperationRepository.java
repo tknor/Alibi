@@ -13,9 +13,16 @@ import java.util.UUID;
 
 public interface OperationRepository extends JpaRepository<Operation, UUID> {
 
-    @EntityGraph(attributePaths = {"crewMembers", "crewMembers.person"})
-    @Query("select distinct operation from Operation operation")
-    List<Operation> findAllWithCrewMembers();
+    @Query("""
+            select operation.id as id,
+                   operation.codeName as codeName,
+                   count(crewMember.id) as crewSize,
+                   operation.crewSizeLimit as crewSizeLimit
+            from Operation operation
+            left join operation.crewMembers crewMember
+            group by operation.id, operation.codeName, operation.crewSizeLimit
+            """)
+    List<OperationSummaryProjection> findAllSummaries();
 
     @EntityGraph(attributePaths = {"crewMembers", "crewMembers.person"})
     @Query("select operation from Operation operation where operation.id = :id")
