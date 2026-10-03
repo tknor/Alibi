@@ -142,6 +142,24 @@ class SecurityConfigTest {
     }
 
     @Test
+    void readingPersonDetailsRequiresManagerOrAdminRole() throws Exception {
+        when(personService.getPerson(PERSON_ID)).thenReturn(person());
+
+        mvc.perform(get("/api/person/{personId}", PERSON_ID)
+                        .header(AUTHORIZATION_HEADER, BEARER_TOKEN_MEMBER))
+                .andExpect(status().isForbidden());
+
+        mvc.perform(get("/api/person/{personId}", PERSON_ID)
+                        .header(AUTHORIZATION_HEADER, BEARER_TOKEN_MANAGER))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.operationCodeNames").isArray());
+
+        mvc.perform(get("/api/person/{personId}", PERSON_ID)
+                        .header(AUTHORIZATION_HEADER, BEARER_TOKEN_ADMIN))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void readingOperationsRequiresManagerOrAdminRole() throws Exception {
         when(operationQueryService.getAllOperations()).thenReturn(List.of());
         when(operationQueryService.getOperation(OPERATION_ID)).thenReturn(operation());
