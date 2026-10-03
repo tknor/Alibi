@@ -1,5 +1,15 @@
 
-### create person with phone
+### get all people as admin
+GET http://localhost:8080/api/person
+Accept: application/json
+Authorization: Bearer {{admin_token}}
+
+### get all people as crew manager
+GET http://localhost:8080/api/person
+Accept: application/json
+Authorization: Bearer {{manager_token}}
+
+### create person
 POST http://localhost:8080/api/person
 Accept: application/json
 Content-Type: application/json
@@ -9,3 +19,5 @@ Authorization: Bearer {{admin_token}}
   "name": "John Doe",
   "phone": "+420 736 123 456"
 }
+
+> {% client.global.set("person_id", response.body.id); %}
