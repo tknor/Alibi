@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,19 +24,25 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService personService;
+    private final PersonDtoMapper personDtoMapper;
 
     @GetMapping
     public List<PersonSummaryDto> getAllPersons() {
         List<Person> persons = personService.getAllPersons();
 
         return persons.stream()
-                .map(PersonDtoMapper::toPersonSummaryDto)
+                .map(personDtoMapper::toPersonSummaryDto)
                 .toList();
+    }
+
+    @GetMapping("/{personId}")
+    public PersonDetailDto getPerson(@PathVariable UUID personId) {
+        return personDtoMapper.toPersonDetailDto(personService.getPerson(personId));
     }
 
     @PostMapping
     public PersonDetailDto createPerson(@Valid @RequestBody CreatePersonRequest request) {
         Person person = personService.createPerson(request);
-        return PersonDtoMapper.toPersonDetailDto(person);
+        return personDtoMapper.toPersonDetailDto(person);
     }
 }
