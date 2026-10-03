@@ -1,21 +1,21 @@
 package cz.tomas.alibi.common.dtomapper;
 
-import cz.tomas.alibi.common.domain.ItemCategory;
+import cz.tomas.alibi.common.dto.CreateItemRequest;
 import cz.tomas.alibi.common.dto.ItemDto;
 import cz.tomas.alibi.common.entity.Item;
+import org.springframework.stereotype.Component;
 
-// TODO stop using static methods (for better testability)
-// TODO implement the mappers according to best practices
+@Component
 public class ItemDtoMapper {
 
-    public static ItemDto toItemDto(Item item) {
-        return new ItemDto(item.getLabel(), item.getCategory().toString());
+    public ItemDto toItemDto(Item item) {
+        return new ItemDto(item.getId(), item.getLabel(), item.getCategory());
     }
 
-    public static Item toItemEntity(ItemDto itemDto) {
+    public Item toItemEntity(CreateItemRequest request) {
         return Item.builder()
-                .label(itemDto.label())
-                .category(ItemCategory.valueOf(itemDto.category()))
+                .label(request.label())
+                .category(request.category())
                 .build();
     }
 }

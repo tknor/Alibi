@@ -1,25 +1,44 @@
 package cz.tomas.alibi.common.dtomapper;
 
-import cz.tomas.alibi.common.dto.PersonSummaryDto;
+import cz.tomas.alibi.common.dto.CreatePersonRequest;
 import cz.tomas.alibi.common.dto.PersonDetailDto;
+import cz.tomas.alibi.common.dto.PersonSummaryDto;
+import cz.tomas.alibi.common.entity.CrewMember;
+import cz.tomas.alibi.common.entity.Operation;
 import cz.tomas.alibi.common.entity.Person;
+import org.springframework.stereotype.Component;
 
-// TODO stop using static methods (for better testability)
+@Component
 public class PersonDtoMapper {
 
-    public static PersonSummaryDto toPersonSummaryDto(Person person) {
+    public PersonSummaryDto toPersonSummaryDto(Person person) {
         return new PersonSummaryDto(person.getId(), person.getName());
     }
 
-    public static PersonDetailDto toPersonDetailDto(Person person) {
-        return new PersonDetailDto(person.getId(), person.getName(), person.getPhone());
+    public PersonDetailDto toPersonDetailDto(Person person) {
+        return new PersonDetailDto(
+                person.getId(),
+                person.getName(),
+                person.getPhone(),
+                person.getCrewMembers().stream()
+                        .map(CrewMember::getOperation)
+                        .map(Operation::getCodeName)
+                        .sorted()
+                        .toList()
+        );
     }
 
-    public static Person toPersonEntity(PersonDetailDto personDetailDto) {
-        Person person = new Person();
-        person.setId(personDetailDto.id());
-        person.setName(personDetailDto.name());
-        person.setPhone(personDetailDto.phone());
-        return person;
+    public Person toPersonEntity(CreatePersonRequest request) {
+        return Person.builder()
+                .name(request.name())
+                .phone(normalizePhone(request.phone()))
+                .build();
+    }
+
+    private String normalizePhone(String phone) {
+        if (phone == null || phone.isBlank()) {
+            return null;
+        }
+        return phone.replaceAll("\\s+", "");
     }
 }
