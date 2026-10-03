@@ -1,5 +1,7 @@
 package cz.tomas.alibi.common.service;
 
+import cz.tomas.alibi.common.dto.OperationSummaryDto;
+import cz.tomas.alibi.common.dtomapper.OperationDtoMapper;
 import cz.tomas.alibi.common.entity.Operation;
 import cz.tomas.alibi.common.exception.ResourceNotFoundException;
 import cz.tomas.alibi.common.repository.OperationRepository;
@@ -16,9 +18,12 @@ import java.util.UUID;
 public class OperationQueryService {
 
     private final OperationRepository operationRepository;
+    private final OperationDtoMapper operationDtoMapper;
 
-    public List<Operation> getAllOperations() {
-        return operationRepository.findAllWithCrewMembers();
+    public List<OperationSummaryDto> getAllOperations() {
+        return operationRepository.findAllSummaries().stream()
+                .map(operationDtoMapper::toOperationSummaryDto)
+                .toList();
     }
 
     public Operation getOperation(UUID operationId) {

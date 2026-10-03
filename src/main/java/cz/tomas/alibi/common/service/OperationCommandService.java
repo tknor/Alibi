@@ -31,7 +31,6 @@ public class OperationCommandService {
         return operationRepository.save(operation);
     }
 
-    // TODO call a dummy audit service which could log the attempt of adding and removing crew members (using new transaction so the attempt is always logged) and call it to log the success of the operation (in the same transaction so that the success is logged only when nothing goes wrong)
     @Transactional
     public Operation addCrewMember(AddCrewMemberCommand command) {
 
