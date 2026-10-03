@@ -3,6 +3,7 @@ package cz.tomas.alibi.common.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,7 @@ public class Person {
     /**
      * List of associated crew members (associations between this person and operations).
      */
+    @Builder.Default
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<CrewMember> crewMembers;
+    private List<CrewMember> crewMembers = new ArrayList<>();
 }
