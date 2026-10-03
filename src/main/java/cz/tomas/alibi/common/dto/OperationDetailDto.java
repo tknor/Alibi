@@ -7,6 +7,6 @@ public record OperationDetailDto(
         UUID id,
         String codeName,
         Integer crewSizeLimit,
-        List<CrewMemberDto> crewMembers
+        List<PersonSummaryDto> crewMembers
 ) {
 }

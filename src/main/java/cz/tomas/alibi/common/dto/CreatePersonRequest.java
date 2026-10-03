@@ -1,10 +1,11 @@
 package cz.tomas.alibi.common.dto;
 
+import cz.tomas.alibi.common.validation.ValidPhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 
-// TODO add custom validation for phone number ensuring "+" format and mapping that removes whitespace, if the number is at all present
 public record CreatePersonRequest(
         @NotBlank String name,
+        @ValidPhoneNumber
         String phone
 ) {
 }
