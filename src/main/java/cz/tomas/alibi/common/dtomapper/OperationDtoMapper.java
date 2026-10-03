@@ -5,7 +5,7 @@ import cz.tomas.alibi.common.dto.OperationDetailDto;
 import cz.tomas.alibi.common.entity.CrewMember;
 import cz.tomas.alibi.common.entity.Operation;
 
-// TODO stop using static methods (for better testability) possibly use MapStruct instead
+// TODO stop using static methods (for better testability)
 public final class OperationDtoMapper {
 
     private OperationDtoMapper() {

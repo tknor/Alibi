@@ -4,7 +4,7 @@ import cz.tomas.alibi.common.dto.PersonSummaryDto;
 import cz.tomas.alibi.common.dto.PersonDetailDto;
 import cz.tomas.alibi.common.entity.Person;
 
-// TODO stop using static methods (for better testability) possibly use MapStruct instead
+// TODO stop using static methods (for better testability)
 public class PersonDtoMapper {
 
     public static PersonSummaryDto toPersonSummaryDto(Person person) {
