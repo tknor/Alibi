@@ -2,13 +2,13 @@ package cz.tomas.alibi;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 /**
- * Starts a fresh PostgreSQL container through Testcontainers.
+ * Starts one PostgreSQL container for the integration-test JVM.
  * Spring Boot connects to the container using its dynamically allocated port.
  * Liquibase applies the schema.
  *
@@ -16,10 +16,15 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
  */
 @ActiveProfiles("test")
 @SpringBootTest
-@Testcontainers
 abstract class AbstractIntegrationTest {
 
-	@Container
+	@MockitoBean
+    JwtDecoder jwtDecoder;
+
 	@ServiceConnection
 	static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:17.10-alpine");
+
+	static {
+		postgres.start();
+	}
 }
