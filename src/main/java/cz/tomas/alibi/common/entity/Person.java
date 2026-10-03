@@ -23,7 +23,7 @@ public class Person {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     /**
