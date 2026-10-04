@@ -31,7 +31,10 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/openapi.yaml"
+                                "/openapi.yaml",
+                                "/graphql",
+                                "/graphiql",
+                                "/graphiql/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/health", "/actuator/health/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/item").permitAll()

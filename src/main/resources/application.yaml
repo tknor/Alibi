@@ -12,6 +12,10 @@ spring:
     hibernate:
       ddl-auto: validate
 
+  graphql:
+    graphiql:
+      enabled: true
+
   docker:
     compose:
       # docker-compose file is meant to be always started manually
