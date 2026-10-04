@@ -3,6 +3,7 @@ package cz.tomas.alibi.common.graphql;
 import cz.tomas.alibi.common.entity.Person;
 import cz.tomas.alibi.common.service.PersonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -20,6 +21,11 @@ public class PersonGraphQlController {
         return personService.getAllPersons().stream()
                 .map(GraphQlPerson::from)
                 .toList();
+    }
+
+    @QueryMapping
+    public GraphQlPerson person(@Argument("id") UUID id) {
+        return GraphQlPerson.from(personService.getPerson(id));
     }
 
     public record GraphQlPerson(UUID id, String name, String phone) {

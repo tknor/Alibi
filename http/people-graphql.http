@@ -4,7 +4,7 @@ POST http://localhost:8080/graphql
 Content-Type: application/json
 
 {
-  "query": "{ people { name } }"
+  "query": "query PersonNames { people { name } }"
 }
 
 ### list person names and phones (unauthenticated)
@@ -12,5 +12,24 @@ POST http://localhost:8080/graphql
 Content-Type: application/json
 
 {
-  "query": "{ people { name phone } }"
+  "query": "query PeopleSummaries { people { id name phone } }"
+}
+
+### get person (unauthenticated)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query PersonDetails($id: ID!) { person(id: $id) { id name phone } }",
+  "variables": {
+    "id": "{{person_id}}"
+  }
+}
+
+### get person (unauthenticated)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "{ person(id: \"00000000-0000-0000-0000-000000000000\") { id name phone } }"
 }
