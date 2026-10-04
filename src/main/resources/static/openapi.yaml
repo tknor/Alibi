@@ -325,7 +325,7 @@ components:
         phone:
           type: string
           minLength: 1
-          description: Phone number accepted in a format that can be normalized to an E.164-like value.
+          description: Required phone number; whitespace is removed before persistence.
           example: '+420 736 123 456'
     PersonSummary:
       type: object
