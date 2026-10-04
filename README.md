@@ -29,6 +29,13 @@ To make the selected environment explicit:
 .\gradlew.bat bootRun --args="--spring.profiles.active=local"
 ```
 
+## API documentation
+
+[OpenAPI specification](src/main/resources/static/openapi.yaml)
+
+With the application running, its Swagger UI is available without authentication at
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+
 See [docker/USAGE.md](docker/USAGE.md) for the local Keycloak console, demo
 accounts, etc.
 

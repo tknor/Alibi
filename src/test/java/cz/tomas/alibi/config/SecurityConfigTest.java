@@ -37,12 +37,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -100,6 +102,13 @@ class SecurityConfigTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void openApiSpecificationDoesNotRequireAuthentication() throws Exception {
+        mvc.perform(get("/openapi.yaml"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("title: Alibi API")));
     }
 
     @Test

@@ -16,3 +16,9 @@ spring:
     compose:
       # docker-compose file is meant to be always started manually
       enabled: false
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /openapi.yaml
+    disable-swagger-default-url: true
