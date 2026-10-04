@@ -57,6 +57,10 @@ Run all tests with:
 .\gradlew.bat test
 ```
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
 ## Configuration profiles
 
 | Profile | Intended use                | Connection source                      |
