@@ -1,0 +1,16 @@
+
+### list person names (unauthenticated)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "{ people { name } }"
+}
+
+### list person names and phones (unauthenticated)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "{ people { name phone } }"
+}
