@@ -1,6 +1,6 @@
 # Alibi
 
-Alibi is a Spring Boot REST API experimental / learning / demonstration project.
+Alibi is a Spring Boot, REST API, experimental / learning / demonstration project.
 Its domain is a generic operation planning and crew-management application.
 
 ## Prerequisites
