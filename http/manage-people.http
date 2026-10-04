@@ -9,7 +9,7 @@ GET http://localhost:8080/api/person
 Accept: application/json
 Authorization: Bearer {{manager_token}}
 
-### create person
+### create person as admin
 POST http://localhost:8080/api/person
 Accept: application/json
 Content-Type: application/json
@@ -22,7 +22,12 @@ Authorization: Bearer {{admin_token}}
 
 > {% client.global.set("person_id", response.body.id); %}
 
-### get person detail
+### get person detail as admin
+GET http://localhost:8080/api/person/{{person_id}}
+Accept: application/json
+Authorization: Bearer {{admin_token}}
+
+### get person detail as crew manager
 GET http://localhost:8080/api/person/{{person_id}}
 Accept: application/json
 Authorization: Bearer {{manager_token}}

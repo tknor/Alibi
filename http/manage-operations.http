@@ -9,26 +9,25 @@ GET http://localhost:8080/api/operation
 Accept: application/json
 Authorization: Bearer {{manager_token}}
 
-
-### create operation
+### create operation as crew manager
 POST http://localhost:8080/api/operation
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{manager_token}}
 
 {
-  "codeName": "Operation Harambe",
-  "crewSizeLimit": 5
+  "codeName": "Operation French Fry",
+  "crewSizeLimit": 1
 }
 
 > {% client.global.set("operation_id", response.body.id); %}
 
-### get operation by id
+### get operation by ID as crew manager
 GET http://localhost:8080/api/operation/{{operation_id}}
 Accept: application/json
 Authorization: Bearer {{manager_token}}
 
-### add crew member
+### add crew member as crew manager
 POST http://localhost:8080/api/operation/{{operation_id}}/crew-member
 Accept: application/json
 Content-Type: application/json
@@ -38,7 +37,7 @@ Authorization: Bearer {{manager_token}}
   "personId": "{{person_id}}"
 }
 
-### remove crew member
+### remove crew member as crew manager
 DELETE http://localhost:8080/api/operation/{{operation_id}}/crew-member/{{person_id}}
 Accept: application/json
 Content-Type: application/json

@@ -1,8 +1,8 @@
-package cz.tomas.alibi;
+package cz.tomas.alibi.common.repository;
 
+import cz.tomas.alibi.AbstractIntegrationTest;
 import cz.tomas.alibi.common.domain.ItemCategory;
 import cz.tomas.alibi.common.entity.Item;
-import cz.tomas.alibi.common.repository.ItemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/actuator/health", "/actuator/health/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/item").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/person", "/api/item").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/person", "/api/person/**").hasAnyRole("CREW_MANAGER", "ADMIN")

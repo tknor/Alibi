@@ -1,9 +1,8 @@
-package cz.tomas.alibi;
+package cz.tomas.alibi.common.repository;
 
+import cz.tomas.alibi.AbstractIntegrationTest;
 import cz.tomas.alibi.common.entity.Operation;
 import cz.tomas.alibi.common.entity.Person;
-import cz.tomas.alibi.common.repository.OperationRepository;
-import cz.tomas.alibi.common.repository.PersonRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

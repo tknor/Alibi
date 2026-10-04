@@ -1,12 +1,15 @@
-### actuator health
+
+### actuator health (unauthenticated)
 GET http://localhost:8080/actuator/health
 Accept: application/json
 
 ### actuator
 GET http://localhost:8080/actuator
 Accept: application/json
+Authorization: Bearer {{admin_token}}
 
 ### actuator info
 # production profile explicitly exposes this endpoint
 GET http://localhost:8080/actuator/info
 Accept: application/json
+Authorization: Bearer {{admin_token}}

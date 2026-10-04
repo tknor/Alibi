@@ -58,6 +58,13 @@ Run all tests with:
 | `test`  | Automated integration tests | Testcontainers, configured dynamically |
 | `prod`  | Deployed application        | Environment variables / secret manager |
 
+The local profile exposes all Actuator endpoints under `/actuator` for development.
+
+The production profile exposes only `health` and `info`. Its unauthenticated health
+endpoint includes the liveness and readiness probe groups at
+`/actuator/health/liveness` and `/actuator/health/readiness`; all other exposed
+endpoints remain protected by the API security configuration.
+
 ## Production
 
 Build a container image:

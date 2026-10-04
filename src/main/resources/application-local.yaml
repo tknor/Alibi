@@ -10,3 +10,16 @@ spring:
     username: alibi
     password: alibi
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    root: info
+    cz.tomas.alibi: debug
+    # org.hibernate.SQL: debug
+    # org.hibernate.orm.jdbc.bind: trace
+

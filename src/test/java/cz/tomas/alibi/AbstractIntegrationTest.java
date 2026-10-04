@@ -16,7 +16,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
  */
 @ActiveProfiles("test")
 @SpringBootTest
-abstract class AbstractIntegrationTest {
+public abstract class AbstractIntegrationTest {
 
 	@MockitoBean
     JwtDecoder jwtDecoder;

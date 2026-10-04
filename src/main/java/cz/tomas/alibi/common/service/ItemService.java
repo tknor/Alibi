@@ -4,10 +4,12 @@ import cz.tomas.alibi.common.domain.ItemCategory;
 import cz.tomas.alibi.common.entity.Item;
 import cz.tomas.alibi.common.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ItemService {
